@@ -36,7 +36,7 @@ pipeline {
 //            }
 //        }
 //    }
-        post{
+        stage('post'){
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
             subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
