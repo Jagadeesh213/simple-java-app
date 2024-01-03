@@ -4,62 +4,69 @@ pipeline {
     maven 'M2_HOME'
   }
   stages {
-//    stage ('Initialize') {
-//             steps {
-//                 sh '''
-//                     M2_HOME=/opt/maven
-//                     M2=/opt/maven/bin
-//                     PATH=$PATH:$HOME/bin/:$JAVA_HOME:$M2:$M2_HOME
-//                     export PATH
-//                     echo "PATH = ${PATH}"
-//                     echo "M2_HOME = ${M2_HOME}"
-//                     whoami
-//                 '''
-//             }
-//         }
+         stage ('Initialize') {
+             steps {
+                 sh '''
+                     M2_HOME=/opt/maven
+                     M2=/opt/maven/bin
+                     PATH=$PATH:$HOME/bin/:$JAVA_HOME:$M2:$M2_HOME
+                     export PATH
+                     echo "PATH = ${PATH}"
+                     echo "M2_HOME = ${M2_HOME}"
+                     whoami
+                 '''
+             }
+         }
     stage('Build app') {
       steps {
         sh 'mvn clean install package'
       }
+//      post {
+//        failure {
+//            script {
+                // Rollback to the previous successful build
+//                def previousBuild = currentBuild.getPreviousSuccessfulBuild(205)
+//                if (previousBuild) {
+//                    echo "Rolling back to the previous successful build: 205,
+//                    buildjob: 208, parameters: [[$class: 'IntParameterValue', name: 'DiagnosticsPup', value: 205]]
+//                } else {
+//                    echo "No previous successful build found. The pipeline cannot be rolled back."
+//                }
+//            }
+//        }
+//    }
+        post{
+        failure{
+            emailext to: "jagadeesh.j@apollohl.com",
+            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
+        }
+        changed{
+            emailext to: "jagadeesh.j@apollohl.com",
+            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
+        }    
+        success{
+            emailext to: "jagadeesh.j@apollohl.com",
+            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
+        }
     }
-   //  stage('Push Artifact to S3') {
-  //    steps {
-  //      sh 'aws s3 cp webapp/target/webapp.war s3://demo-test198'
-      }
+}
+//    stage('Deploy to Tomcat') {
+//            steps {
+                // SSH into the remote server and deploy the WAR file to Tomcat
+//                sshagent(['105a93c8-6647-4244-8b70-bda28fed487d']) {
+//                    sh "scp webapp/target/webapp.war ubuntu@3.109.231.32:/opt/tomcat/qa_webapps/test"
+//                }
+//            }
+//        }    
+//   stage('gitlab') {
+//          steps {
+//            echo 'Notify GitLab'
+//             updateGitlabCommitStatus name: 'build', state: 'pending'
+//            updateGitlabCommitStatus name: 'build', state: 'success'
+//          }
+//        }
     }
-    
-    stage('Deploy to tomcat') {
-      steps {
-         sh 'sudo scp -i $tomcat_key -o "StrictHostKeyChecking=no" webapp/target/webapp.war ubuntu@3.109.32.144:/opt/tomcat/webapps'
-//           sh 'sudo ansible-playbook deploy-new.yml'
-      }
-    }
-//     stage('building docker image from docker file by tagging') {
-//       steps {
-//         sh 'docker build -t phanirudra9/phani9-devops:$BUILD_NUMBER .'
-//       }   
-//     }
-//     stage('logging into docker hub') {
-//       steps {
-//         sh 'docker login --username="phanirudra9" --password="9eb876d4@A"'
-//       }   
-//     }
-//     stage('pushing docker image to the docker hub with build number') {
-//       steps {
-//         sh 'docker push phanirudra9/phani9-devops:$BUILD_NUMBER'
-//       }   
-//     }
-//     stage('deploying the docker image into EC2 instance and run the container') {
-//       steps {
-//         sh 'ansible-playbook deploy.yml --extra-vars="buildNumber=$BUILD_NUMBER"'
-//       }   
-//     }  
-// }
-// post {
-//      always {
-//        emailext to: 'nammimahesh01@gmail.com',
-//        attachLog: true, body: "Dear team pipeline is ${currentBuild.result} please check ${BUILD_URL} or PFA build log", compressLog: false,
-//        subject: "Jenkins Build Notification: ${JOB_NAME}-Build# ${BUILD_NUMBER} ${currentBuild.result}"
-//     }
-// }
 }
