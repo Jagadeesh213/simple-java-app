@@ -60,7 +60,7 @@ pipeline {
  //                   sh "scp webapp/target/webapp.war ubuntu@3.109.231.32:/opt/tomcat/qa_webapps/sample"
  //               }
  //           }
-        }    
+ //       }    
 //   stage('gitlab') {
 //          steps {
 //            echo 'Notify GitLab'
