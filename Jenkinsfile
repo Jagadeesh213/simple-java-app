@@ -21,7 +21,6 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
-    }  
 //      post {
 //        failure {
 //            script {
@@ -36,7 +35,7 @@ pipeline {
 //            }
 //        }
 //    }
-        stage('post'){
+        post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
             subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
@@ -53,6 +52,7 @@ pipeline {
             subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
+      }
     }
     stage('Deploy to Tomcat') {
             steps {
