@@ -53,14 +53,14 @@ pipeline {
         }
       }
     }
- //   stage('Deploy to Tomcat') {
- //           steps {
+    stage('Deploy to Tomcat') {
+            steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
- //               sshagent(['4ec2bb2f-879a-4dab-b5fb-0404a7f7baa4']){
- //                   sh "scp webapp/target/webapp.war ubuntu@3.109.231.32:/opt/tomcat/qa_webapps/sample"
- //               }
- //           }
- //       }    
+                sshagent(['4ec2bb2f-879a-4dab-b5fb-0404a7f7baa4']){
+                   "scp webapp/target/webapp.war ubuntu@3.109.231.32:/opt/tomcat/qa_webapps/sample"
+                }
+            }
+        }    
 //   stage('gitlab') {
 //          steps {
 //            echo 'Notify GitLab'
