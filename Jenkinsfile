@@ -21,6 +21,7 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
+    }  
 //      post {
 //        failure {
 //            script {
@@ -53,7 +54,6 @@ pipeline {
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
     }
-}
     stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
