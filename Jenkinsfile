@@ -56,8 +56,8 @@ pipeline {
     stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
-                //sshagent(['4ec2bb2f-879a-4dab-b5fb-0404a7f7baa4']){
-                   sh "scp /sample/webapp/target/webapp.war dev_user@3.109.231.32:/opt/tomcat/qa_webapps/sample"
+                sshagent(['4ec2bb2f-879a-4dab-b5fb-0404a7f7baa4']){
+                   scp -v /var/lib/jenkins/workspace/SAMPLE/webapp/target/webapp.war dev_user@3.109.231.32:/opt/tomcat/qa_webapps
                 }
             }
         }    
