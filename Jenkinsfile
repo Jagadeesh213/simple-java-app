@@ -32,20 +32,6 @@ pipeline {
            }
         }
     } 
-//      post {
-//        failure {
-//            script {
-                // Rollback to the previous successful build
-//                def previousBuild = currentBuild.getPreviousSuccessfulBuild(205)
-//                if (previousBuild) {
-//                    echo "Rolling back to the previous successful build: 205,
-//                    buildjob: 208, parameters: [[$class: 'IntParameterValue', name: 'DiagnosticsPup', value: 205]]
-//                } else {
-//                    echo "No previous successful build found. The pipeline cannot be rolled back."
-//                }
-//            }
-//        }
-//    }
         post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
