@@ -53,12 +53,7 @@ pipeline {
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
       }
-      stage('SonarQube analysis') {
-    withSonarQubeEnv(credentialsId: 'jenkins', installationName: 'sonar') { // You can override the credential to be used
-      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-     }
-  }
-}
+   }
     stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
