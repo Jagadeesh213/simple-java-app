@@ -31,7 +31,8 @@ pipeline {
                 script {
                     def scannerHome = tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     
-                    withCredentials([usernamePassword(credentialsId: '81b8d47a-b775-4c84-bd93-9576bd8da492', usernameVariable: 'admin', passwordVariable: 'sonar@123')]) {
+                    withCredentials([usernamePassword(credentialsId: '81b8d47a-b775-4c84-bd93-9576bd8da492', usernameVariable: 'admin', passwordVariable: 'sonar@123')]) 
+                  {
                         def scannerArgs = [
                             "-Dsonar.projectKey=your_project_key",
                             "-Dsonar.sources=src",
@@ -52,20 +53,7 @@ pipeline {
             // Cleanup or finalization tasks if needed
         }
     } 
-//      post {
-//        failure {
-//            script {
-                // Rollback to the previous successful build
-//                def previousBuild = currentBuild.getPreviousSuccessfulBuild(205)
-//                if (previousBuild) {
-//                    echo "Rolling back to the previous successful build: 205,
-//                    buildjob: 208, parameters: [[$class: 'IntParameterValue', name: 'DiagnosticsPup', value: 205]]
-//                } else {
-//                    echo "No previous successful build found. The pipeline cannot be rolled back."
-//                }
-//            }
-//        }
-//    }
+}     
         post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
@@ -82,7 +70,6 @@ pipeline {
             subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
-      }
     }
     stage('Deploy to Tomcat') {
             steps {
@@ -92,13 +79,6 @@ pipeline {
                 sh "scp /var/lib/jenkins/workspace/sample/webapp/target/webapp.war dev_user@3.109.231.32:/opt/tomcat/qa_webapps/sample/"
                 }
             }
-        }    
-//   stage('gitlab') {
-//          steps {
-//            echo 'Notify GitLab'
-//             updateGitlabCommitStatus name: 'build', state: 'pending'
-//            updateGitlabCommitStatus name: 'build', state: 'success'
-//          }
-//        }
+        }
     }
 }
