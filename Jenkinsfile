@@ -22,17 +22,6 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
-    }
-    stage('SonarQube analysis') {
-      steps{
-        script {
-            scannerHome = tool 'SonarQube';
-        }
-        withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner"
-           }
-        }
-    } 
 //      post {
 //        failure {
 //            script {
@@ -64,6 +53,7 @@ pipeline {
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
       }
+    }
     stage('SonarQube analysis') {
     environment {
       SCANNER_HOME = tool 'Sonar-scanner'
@@ -79,11 +69,4 @@ pipeline {
             }
         } 
     }
-}  
-//   stage('gitlab') {
-//          steps {
-//            echo 'Notify GitLab'
-//             updateGitlabCommitStatus name: 'build', state: 'pending'
-//            updateGitlabCommitStatus name: 'build', state: 'success'
-//          }
-//        }
+} 
