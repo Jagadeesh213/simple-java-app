@@ -26,34 +26,34 @@ pipeline {
     environment {
         SONAR_CREDENTIALS = credentials('81b8d47a-b775-4c84-bd93-9576bd8da492')
     }
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+    //    stage('SonarQube Analysis') {
+    //        steps {
+    //            script {
+    //                def scannerHome = tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     
-                    withCredentials([usernamePassword(credentialsId: '81b8d47a-b775-4c84-bd93-9576bd8da492', usernameVariable: 'admin', passwordVariable: 'sonar@123')]) 
-                  {
-                        def scannerArgs = [
-                            "-Dsonar.projectKey=your_project_key",
-                            "-Dsonar.sources=src",
+    //                withCredentials([usernamePassword(credentialsId: '81b8d47a-b775-4c84-bd93-9576bd8da492', usernameVariable: 'admin', passwordVariable: 'sonar@123')]) 
+    //              {
+    //                    def scannerArgs = [
+    //                        "-Dsonar.projectKey=your_project_key",
+    //                        "-Dsonar.sources=src",
                             // Add more parameters as needed
-                            "-Dsonar.login=${admin}",
-                            "-Dsonar.password=${sonar@123}"
-                        ]
+    //                        "-Dsonar.login=${admin}",
+    //                        "-Dsonar.password=${sonar@123}"
+    //                   ]
 
-                        withSonarQubeEnv('SonarQube') {
-                            sh "${scannerHome}/bin/sonar-scanner ${scannerArgs.join(' ')}"
-                        }
-                    }
-                }
-            }
-        }
-    post {
-        always {
+    //                    withSonarQubeEnv('SonarQube') {
+    //                        sh "${scannerHome}/bin/sonar-scanner ${scannerArgs.join(' ')}"
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //post {
+    //    always {
             // Cleanup or finalization tasks if needed
-        }
-    } 
-}     
+    //    }
+    //} 
+//}     
         post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
@@ -81,4 +81,4 @@ pipeline {
             }
         }
     }
-}
+}   
