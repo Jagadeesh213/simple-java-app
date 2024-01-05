@@ -23,7 +23,7 @@ pipeline {
         sh 'mvn clean install package'
       }
      stage('SonarQube analysis') {
-     withSonarQubeEnv(credentialsId: '039c95fb-edfc-49a5-b959-a3b0ed4da42f', installationName: 'SonarQube') { // You can override the credential to be used
+     withSonarQubeEnv(credentialsId: 'jenkins', installationName: 'sonar') { // You can override the credential to be used
       sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
         }
      }
