@@ -54,12 +54,7 @@ pipeline {
         }
       }
     }
-    stage('SonarQube analysis') {
-    steps {
-      SCANNER_HOME = tool 'Sonar-scanner'
-       }
-    }
-    stage('Deploy to Tomcat') {
+        stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
                 sshagent(['4ec2bb2f-879a-4dab-b5fb-0404a7f7baa4']){
