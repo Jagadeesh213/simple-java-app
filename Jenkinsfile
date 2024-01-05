@@ -31,7 +31,6 @@ pipeline {
             sh "${scannerHome}/bin/sonar-scanner"
            }
         }
-    } 
         post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
