@@ -22,6 +22,17 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
+    }
+    stage('SonarQube analysis') {
+      steps{
+        script {
+            scannerHome = tool 'SonarQube';
+        }
+        withSonarQubeEnv('SonarQube') {
+            sh "${scannerHome}/bin/sonar-scanner"
+           }
+        }
+    } 
 //      post {
 //        failure {
 //            script {
@@ -53,7 +64,11 @@ pipeline {
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
       }
-   }
+    stage('SonarQube analysis') {
+    environment {
+      SCANNER_HOME = tool 'Sonar-scanner'
+       }
+    }
     stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
@@ -62,7 +77,9 @@ pipeline {
                 sh "scp /var/lib/jenkins/workspace/sample/webapp/target/webapp.war dev_user@3.109.231.32:/opt/tomcat/qa_webapps/sample/"
                 }
             }
-        }    
+        } 
+    }
+}  
 //   stage('gitlab') {
 //          steps {
 //            echo 'Notify GitLab'
@@ -70,5 +87,3 @@ pipeline {
 //            updateGitlabCommitStatus name: 'build', state: 'success'
 //          }
 //        }
-    }
-}
