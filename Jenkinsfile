@@ -1,3 +1,4 @@
+#!/bin/bash
 pipeline {
   agent any
   tools {
@@ -21,6 +22,20 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
+//      post {
+//        failure {
+//            script {
+                // Rollback to the previous successful build
+//                def previousBuild = currentBuild.getPreviousSuccessfulBuild(205)
+//                if (previousBuild) {
+//                    echo "Rolling back to the previous successful build: 205,
+//                    buildjob: 208, parameters: [[$class: 'IntParameterValue', name: 'DiagnosticsPup', value: 205]]
+//                } else {
+//                    echo "No previous successful build found. The pipeline cannot be rolled back."
+//                }
+//            }
+//        }
+//    }
         post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
@@ -38,6 +53,7 @@ pipeline {
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
       }
+    }
     stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
@@ -46,6 +62,13 @@ pipeline {
                 sh "scp /var/lib/jenkins/workspace/sample/webapp/target/webapp.war dev_user@3.109.231.32:/opt/tomcat/qa_webapps/sample/"
                 }
             }
-        } 
+        }    
+//   stage('gitlab') {
+//          steps {
+//            echo 'Notify GitLab'
+//             updateGitlabCommitStatus name: 'build', state: 'pending'
+//            updateGitlabCommitStatus name: 'build', state: 'success'
+//          }
+//        }
     }
-} 
+}
