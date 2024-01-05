@@ -1,4 +1,3 @@
-#!/bin/bash
 pipeline {
   agent any
   tools {
@@ -22,6 +21,7 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
+    }
     stage('SonarQube analysis') {
       steps{
         script {
@@ -31,8 +31,7 @@ pipeline {
             sh "${scannerHome}/bin/sonar-scanner"
            }
         }
-    }
-  }
+    } 
 //      post {
 //        failure {
 //            script {
@@ -75,10 +74,3 @@ pipeline {
         } 
     }
 }  
-//   stage('gitlab') {
-//          steps {
-//            echo 'Notify GitLab'
-//             updateGitlabCommitStatus name: 'build', state: 'pending'
-//            updateGitlabCommitStatus name: 'build', state: 'success'
-//          }
-//        }
