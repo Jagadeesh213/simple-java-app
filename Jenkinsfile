@@ -82,4 +82,3 @@ pipeline {
 //            updateGitlabCommitStatus name: 'build', state: 'success'
 //          }
 //        }
-    }
