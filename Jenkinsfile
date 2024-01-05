@@ -33,7 +33,6 @@ pipeline {
         }
     }
   }
-}
 //      post {
 //        failure {
 //            script {
@@ -74,7 +73,8 @@ pipeline {
                 }
             }
         } 
-    }  
+    }
+}  
 //   stage('gitlab') {
 //          steps {
 //            echo 'Notify GitLab'
