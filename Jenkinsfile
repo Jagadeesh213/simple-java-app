@@ -22,10 +22,6 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
-    stage('SonarQube')
-    environment {
-        SONAR_CREDENTIALS = credentials('81b8d47a-b775-4c84-bd93-9576bd8da492')
-    }
     //    stage('SonarQube Analysis') {
     //        steps {
     //            script {
