@@ -21,16 +21,6 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
-    }
-    stage('SonarQube analysis') {
-      steps{
-        script {
-            scannerHome = tool 'SonarQube';
-        }
-        withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner"
-           }
-        }
         post{
         failure{
             emailext to: "jagadeesh.j@apollohl.com",
