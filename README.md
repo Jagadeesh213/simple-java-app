@@ -84,13 +84,3 @@ Go to maven and uncheck install-automatically and update the maven home director
 ```sh
    sudo apt-get install ansible -y
 ```
-
-  
-
-
-
-
-
-
-
-
