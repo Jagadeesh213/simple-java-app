@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_Jagadeesh213_simple_java_app_1705735117628-push-trigger-input-set
+  identifier: Build_Jagadeesh213_simple_java_app_1705735117628pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_Jagadeesh213_simple_java_app_1705735117628
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
