@@ -22,15 +22,6 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
-    }
-     stage('SonarQube Analysis') {
-       steps {
-            // Run SonarQube analysis
-         withSonarQubeEnv('SonarQubeServer') {
-         sh 'mvn sonar:sonar'
-          }
-       }
-     }
 //      post {
 //        failure {
 //            script {
@@ -62,6 +53,15 @@ pipeline {
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
       }
+    }
+        stage('SonarQube Analysis') {
+            steps {
+            // Run SonarQube analysis
+            withSonarQubeEnv('SonarQubeServer') {
+            sh 'mvn sonar:sonar'
+            }
+        }
+     }
         stage('Deploy to Tomcat') {
             steps {
                 // SSH into the remote server and deploy the WAR file to Tomcat
