@@ -22,6 +22,14 @@ pipeline {
       steps {
         sh 'mvn clean install package'
       }
+     stage('SonarQube Analysis') {
+       steps {
+            // Run SonarQube analysis
+         withSonarQubeEnv('SonarQubeServer') {
+         sh 'mvn sonar:sonar'
+          }
+       }
+     }
 //      post {
 //        failure {
 //            script {
